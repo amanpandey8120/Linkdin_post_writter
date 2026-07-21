@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIn Post Writer AI</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>✍️</text></svg>">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-inner">
+            <span class="nav-logo">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="#0a66c2"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
+                <span>LinkedIn Post Writer</span>
+            </span>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <!-- Header -->
+        <div class="header">
+            <h1>AI LinkedIn Post Generator</h1>
+            <p>Create professional, engaging LinkedIn posts powered by Qwen3 8B fine-tuned AI</p>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-grid">
+
+            <!-- Left: Input Form -->
+            <div class="card form-card">
+                <h2 class="card-title">Post Details</h2>
+
+                <div class="form-group">
+                    <label for="topic">Topic <span class="required">*</span></label>
+                    <input type="text" id="topic" placeholder="e.g., AI in Healthcare, Data Engineering Best Practices..." required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="tone">Tone</label>
+                        <select id="tone">
+                            <option value="Professional">Professional</option>
+                            <option value="Inspirational">Inspirational</option>
+                            <option value="Casual">Casual</option>
+                            <option value="Thought Leadership">Thought Leadership</option>
+                            <option value="Storytelling">Storytelling</option>
+                            <option value="Educational">Educational</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="industry">Industry</label>
+                        <select id="industry">
+                            <option value="Technology">Technology</option>
+                            <option value="Healthcare">Healthcare</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Education">Education</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Consulting">Consulting</option>
+                            <option value="Human Resources">Human Resources</option>
+                            <option value="Data Science">Data Science</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="audience">Target Audience</label>
+                        <select id="audience">
+                            <option value="General">General</option>
+                            <option value="Executives">Executives</option>
+                            <option value="Engineers">Engineers</option>
+                            <option value="Recruiters">Recruiters</option>
+                            <option value="Founders">Founders</option>
+                            <option value="Students">Students</option>
+                            <option value="Job Seekers">Job Seekers</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="post_length">Post Length</label>
+                        <select id="post_length">
+                            <option value="Short">Short (~100 words)</option>
+                            <option value="Medium" selected>Medium (~200 words)</option>
+                            <option value="Long">Long (~350 words)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="cta">Call to Action</label>
+                    <select id="cta">
+                        <option value="Engage with the post">Engage with the post</option>
+                        <option value="Share your thoughts">Share your thoughts in the comments</option>
+                        <option value="Repost to your network">Repost to your network</option>
+                        <option value="Visit our website">Visit our website to learn more</option>
+                        <option value="Connect with me">Connect with me for more insights</option>
+                        <option value="Sign up for newsletter">Sign up for the newsletter</option>
+                    </select>
+                </div>
+
+                <button class="generate-btn" id="generateBtn" onclick="generatePost()">
+                    <span class="btn-text">Generate LinkedIn Post</span>
+                    <span class="spinner" id="spinner" style="display:none;"></span>
+                </button>
+            </div>
+
+            <!-- Right: Output -->
+            <div class="card output-card">
+                <div class="output-header">
+                    <h2 class="card-title">Generated Post</h2>
+                    <span class="badge" id="wordCount">0 words</span>
+                </div>
+
+                <textarea id="output" placeholder="Your AI-generated LinkedIn post will appear here... You can edit it directly."></textarea>
+
+                <div class="output-actions">
+                    <button class="action-btn copy-btn" onclick="copyPost()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                        Copy Post
+                    </button>
+                    <button class="action-btn clear-btn" onclick="clearOutput()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+                        Clear
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Error Toast -->
+        <div id="toast" class="toast"></div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Powered by <strong>Qwen3 8B + LoRA</strong> &nbsp;·&nbsp; Built with FastAPI</p>
+        </div>
+
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>

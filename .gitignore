@@ -1,0 +1,5 @@
+
+# Large model files
+linkedin_post_writer_lora/adapter_model.safetensors
+linkedin_post_writer_lora/tokenizer.json
+linkedin_post_writer_lora/*.safetensors
