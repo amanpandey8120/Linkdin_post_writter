@@ -16,8 +16,5 @@ RUN pip install --upgrade pip && \
 # Copy application code
 COPY . .
 
-# Expose the port
-EXPOSE 8000
-
-# Run with uvicorn
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+# Run with uvicorn (uses $PORT env var, default 8000)
+CMD uvicorn app:app --host 0.0.0.0 --port ${PORT:-8000}
